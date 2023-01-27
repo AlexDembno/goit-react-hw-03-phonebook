@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import contacts from 'data/contacts';
+// import contacts from 'data/contacts';
 import FormAddContacts from 'components/FormAddContacts/FormAddContacts';
 import FilterContacts from 'components/FilterContacts/FilterContacts';
 import Contacts from 'components/Contacts/Contacts';
@@ -8,15 +8,13 @@ import { nanoid } from 'nanoid';
 
 class PhoneBook extends Component {
   state = {
-    contacts: [...contacts],
+    contacts: [],
     filter: '',
   };
 
   addContacts = ({ name, number }) => {
     if (this.findDublicate(name, number)) {
-      alert(`${name} is already in contacts`);
-
-      return;
+      return alert(`${name} is already in contacts`);
     }
     const { contacts } = this.state;
     this.setState({
@@ -49,6 +47,21 @@ class PhoneBook extends Component {
       contacts: prevState.contacts.filter(el => el.id !== contactId),
     }));
   };
+
+  componentDidMount() {
+    const contacts = JSON.parse(localStorage.getItem('my-contacts'));
+
+    if (contacts && contacts.length) {
+      this.setState({ contacts });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { contacts } = this.state;
+    if (prevState.contacts.length !== contacts.length) {
+      localStorage.setItem('my-contacts', JSON.stringify(contacts));
+    }
+  }
 
   render() {
     return (

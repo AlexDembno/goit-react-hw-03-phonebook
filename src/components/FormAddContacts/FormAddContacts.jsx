@@ -15,12 +15,12 @@ class FormAddContacts extends Component {
     this.reset();
   };
 
-  reset = () => {
+  reset() {
     this.setState({
       name: '',
       number: '',
     });
-  };
+  }
 
   handleChangeInput = e => {
     const { name, value } = e.currentTarget;
